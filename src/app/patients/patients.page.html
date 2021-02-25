@@ -1,21 +1,23 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Dashboard
-    </ion-title>
+    <ion-title>Patients</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-<h2>{{patients.length}}</h2>
-<h2>{{criticalPatients.length}}</h2>
-<ion-list>
-    <ion-item *ngFor="let patient of criticalPatients" [routerLink]="['./', patient.id]">
+
+  <ion-list>
+    <ion-item *ngFor="let patient of patients" [routerLink]="['./', patient.id]">
     <ion-card class="ion-text-center">
+        <img [src]="patient.imageUrl" />
         <ion-card-header>
           <ion-card-subtitle>{{patient.email}}</ion-card-subtitle>
           <ion-card-subtitle>{{patient.phone}}</ion-card-subtitle>
           <ion-card-title >{{patient.title}}</ion-card-title>
+          <ion-item>
+            <ion-icon name="pencil" slot="start"></ion-icon>
+            <ion-icon name="eye" slot="end"></ion-icon>
+          </ion-item>
         </ion-card-header>
         <ion-card-content>
 
