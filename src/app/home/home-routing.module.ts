@@ -29,11 +29,19 @@ const routes: Routes = [
             path: '',
             loadChildren: () => import('../patients/patients.module').then( m => m.PatientsPageModule)
           },
+
+          {
+            path: 'new',
+            loadChildren: () => import('../patients/new-patient/new-patient.module').then( m => m.NewPatientPageModule)
+          },
+          {
+            path: 'edit/:patientId',
+            loadChildren: () => import('../patients/edit-patient/edit-patient.module').then( m => m.EditPatientPageModule)
+          },
           {
             path: ':patientId',
             loadChildren: () => import('../patient-detail/patient-detail.module').then( m => m.PatientDetailPageModule)
           }
-
       ]
       },
       {

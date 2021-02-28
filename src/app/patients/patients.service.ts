@@ -111,7 +111,10 @@ export class PatientsService {
     })]
   }
 
-
+  getCriticalPatientCount() {
+    let criticalPatients = this.getAllCriticalPatients()
+    return criticalPatients.length
+  }
 
   // This method returns single patient for patientId
   getPatient(patientId: string) {

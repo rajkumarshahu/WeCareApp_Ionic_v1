@@ -4,21 +4,35 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-<h2>{{patients.length}}</h2>
-<h2>{{criticalPatients.length}}</h2>
-<ion-list>
-    <ion-item *ngFor="let patient of criticalPatients" [routerLink]="['./', patient.id]">
-    <ion-card class="ion-text-center">
-        <ion-card-header>
-          <ion-card-subtitle>{{patient.email}}</ion-card-subtitle>
-          <ion-card-subtitle>{{patient.phone}}</ion-card-subtitle>
-          <ion-card-title >{{patient.title}}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Total Patients: {{patientCount}}</ion-card-title>
+            <ion-card-title>Number of Critical Patients: {{criticalPatientCount}}</ion-card-title>
 
-        </ion-card-content>
-    </ion-card>
-    </ion-item>
-  </ion-list>
+          </ion-card-header>
+          <ion-card-content>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <ion-list>
+          <ion-item *ngFor="let criticalPatient of criticalPatients" [routerLink]="['/', 'home', 'tabs', 'dashboard', criticalPatient.id]" detail>
+            <ion-thumbnail slot="start">
+              <ion-img [src]="criticalPatient.imageUrl"></ion-img>
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{ criticalPatient.title }}</h2>
+              <p>{{ criticalPatient.description }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
