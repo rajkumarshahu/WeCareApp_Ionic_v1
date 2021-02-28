@@ -1,27 +1,16 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Dashboard
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-<h2>{{patients.length}}</h2>
-<h2>{{criticalPatients.length}}</h2>
-<ion-list>
-    <ion-item *ngFor="let patient of criticalPatients" [routerLink]="['./', patient.id]">
-    <ion-card class="ion-text-center">
-        <ion-card-header>
-          <ion-card-subtitle>{{patient.email}}</ion-card-subtitle>
-          <ion-card-subtitle>{{patient.phone}}</ion-card-subtitle>
-          <ion-card-title >{{patient.title}}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-
-        </ion-card-content>
-    </ion-card>
-    </ion-item>
-  </ion-list>
-
-</ion-content>
+<ion-tabs>
+<ion-tab-bar slot="bottom">
+  <ion-tab-button tab="dashboard">
+    <ion-label>Dashboard</ion-label>
+    <ion-icon name="home"></ion-icon>
+  </ion-tab-button>
+  <ion-tab-button tab="patients">
+    <ion-label>Patients</ion-label>
+    <ion-icon name="person"></ion-icon>
+  </ion-tab-button>
+  <ion-tab-button tab="criticalPatients">
+    <ion-label>Critical Patients</ion-label>
+    <ion-icon name="warning"></ion-icon>
+  </ion-tab-button>
+</ion-tab-bar>
+</ion-tabs>

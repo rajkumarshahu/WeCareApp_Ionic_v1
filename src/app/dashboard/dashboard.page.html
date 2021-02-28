@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Your Dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<h2>{{patients.length}}</h2>
+<h2>{{criticalPatients.length}}</h2>
+<ion-list>
+    <ion-item *ngFor="let patient of criticalPatients" [routerLink]="['./', patient.id]">
+    <ion-card class="ion-text-center">
+        <ion-card-header>
+          <ion-card-subtitle>{{patient.email}}</ion-card-subtitle>
+          <ion-card-subtitle>{{patient.phone}}</ion-card-subtitle>
+          <ion-card-title >{{patient.title}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+
+        </ion-card-content>
+    </ion-card>
+    </ion-item>
+  </ion-list>
+</ion-content>

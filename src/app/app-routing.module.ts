@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'patient-detail',
     loadChildren: () => import('./patient-detail/patient-detail.module').then( m => m.PatientDetailPageModule)
   },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+  },
 ];
 
 @NgModule({
