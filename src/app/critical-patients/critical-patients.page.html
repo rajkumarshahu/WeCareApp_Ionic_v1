@@ -1,9 +1,25 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>critical-patients</ion-title>
+    <ion-title>Critical Patients</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+<ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <ion-list>
+          <ion-item *ngFor="let criticalPatient of criticalPatients" [routerLink]="['/', 'home', 'tabs', 'dashboard', criticalPatient.id]" detail>
+            <ion-thumbnail slot="start">
+              <ion-img [src]="criticalPatient.imageUrl"></ion-img>
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{ criticalPatient.title }}</h2>
+              <p>{{ criticalPatient.description }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -10,10 +10,14 @@
 </ion-header>
 
 <ion-content>
-<ion-grid>
 
-<ion-row>
-      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+<!-- <ion-button
+    margin
+    color="primary"
+    [routerLink]="['/', 'home', 'tabs', 'patients', 'edit', patient.id]"
+    >Edit</ion-button
+  > -->
+
   <ion-list>
     <ion-item *ngFor="let patient of patients" [routerLink]="['/', 'home','tabs', 'patients',patient.id]" detail>
     <ion-card class="ion-text-center">
@@ -23,6 +27,11 @@
           <ion-card-subtitle>{{patient.phone}}</ion-card-subtitle>
           <ion-card-title >{{patient.title}}</ion-card-title>
           <ion-item>
+          <ion-button
+              margin
+              color="primary"
+              [routerLink]="['/', 'home', 'tabs', 'patients', 'edit', patient.id]"
+              >Edit</ion-button>
             <ion-icon name="pencil" slot="start"></ion-icon>
             <ion-icon name="eye" slot="end"></ion-icon>
           </ion-item>
@@ -33,7 +42,5 @@
     </ion-card>
     </ion-item>
   </ion-list>
-</ion-col>
-    </ion-row>
-    </ion-grid>
+
 </ion-content>

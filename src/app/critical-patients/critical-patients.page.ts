@@ -1,15 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Patient } from '../patients/patients.model';
+import { PatientsService } from '../patients/patients.service';
 
 @Component({
   selector: 'app-critical-patients',
   templateUrl: './critical-patients.page.html',
   styleUrls: ['./critical-patients.page.scss'],
 })
-export class CriticalPatientsPage implements OnInit {
+export class CriticalPatientsPage implements OnInit, OnDestroy {
 
-  constructor() { }
+  criticalPatients: Patient[]
 
-  ngOnInit() {
+  constructor(private patientsService: PatientsService) {}
+
+
+  ngOnInit(){
+
+  }
+
+  ionViewWillLeave() {
+    this.criticalPatients = this.patientsService.getAllCriticalPatients()
+  }
+
+  ngOnDestroy() {
+    console.log("ngOnDestroy()")
   }
 
 }

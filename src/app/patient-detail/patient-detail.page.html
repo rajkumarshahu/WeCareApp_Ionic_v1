@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home/tabs/patients"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{loadedPatient.title}}</ion-title>
+    <ion-title>{{patient.title}}</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="onDeletePatient()">
         <ion-icon name="trash" slot="icon-only"> </ion-icon
@@ -16,13 +16,13 @@
   <ion-grid class="ion-no-padding">
     <ion-row>
       <ion-col>
-        <ion-img [src]="loadedPatient.imageUrl"></ion-img>
+        <ion-img [src]="patient.imageUrl"></ion-img>
       </ion-col>
 
     </ion-row>
     <ion-row>
     <ion-col>
-        <h1 class="ion-text-center">{{loadedPatient.title}}</h1>
+        <h1 class="ion-text-center">{{patient.title}}</h1>
       </ion-col>
     </ion-row>
 

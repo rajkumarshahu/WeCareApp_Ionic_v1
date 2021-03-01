@@ -13,7 +13,8 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('../dashboard/dashboard.module').then( m => m.DashboardPageModule)
-          },
+          }
+          ,
           {
             path: ':patientId',
             loadChildren: () => import('../patient-detail/patient-detail.module').then( m => m.PatientDetailPageModule)
@@ -55,7 +56,6 @@ const routes: Routes = [
             path: ':patientId',
             loadChildren: () => import('../patient-detail/patient-detail.module').then( m => m.PatientDetailPageModule)
           }
-
       ]
       }
       ,

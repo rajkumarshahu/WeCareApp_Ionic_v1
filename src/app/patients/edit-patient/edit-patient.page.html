@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>edit-patient</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/home/tabs/patients' + patient.id"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Patient</ion-title>
   </ion-toolbar>
 </ion-header>
 

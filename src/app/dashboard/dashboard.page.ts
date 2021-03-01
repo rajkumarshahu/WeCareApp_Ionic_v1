@@ -20,15 +20,37 @@ export class DashboardPage implements OnInit, OnDestroy {
   ngOnInit(){
     this.patientCount = this.patientsService.getAllPatient().length
     this.criticalPatientCount = (this.patientsService.getAllCriticalPatients().length)
+
+    // this.criticalPatients = this.patientsService.getAllCriticalPatients()
+
+    console.log("ngOnInit")
   }
+
 
   ionViewWillEnter() {
-    //this.patients = this.patientsService.getAllPatient() // This returns all the patients
-    this.criticalPatients = this.patientsService.getAllCriticalPatients()
+    console.log("ionViewWillEnter")
   }
 
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
+  ionViewDidEnter() {
+
+    this.criticalPatients = this.patientsService.getAllCriticalPatients()
+    console.log("ionViewDidEnter")
+  }
+
+  ionViewWillLeave() {
+
+    console.log("ionViewWillLeave")
+  }
+
+  ionViewDidLeave() {
+
+    console.log("ionViewDidLeave")
+  }
+
+  ngOnDestroy() {
+
+
+    console.log("ngOnDestroy")
   }
 
 }
