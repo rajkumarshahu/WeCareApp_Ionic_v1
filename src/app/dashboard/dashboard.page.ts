@@ -19,7 +19,7 @@ export class DashboardPage implements OnInit, OnDestroy {
 
   ngOnInit(){
     this.patientCount = this.patientsService.getAllPatient().length
-    this.criticalPatientCount = (this.patientsService.getAllCriticalPatients().length)
+    this.criticalPatientCount = this.patientsService.getAllCriticalPatients().length
 
     // this.criticalPatients = this.patientsService.getAllCriticalPatients()
 

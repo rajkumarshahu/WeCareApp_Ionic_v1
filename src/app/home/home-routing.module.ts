@@ -30,7 +30,6 @@ const routes: Routes = [
             path: '',
             loadChildren: () => import('../patients/patients.module').then( m => m.PatientsPageModule)
           },
-
           {
             path: 'new',
             loadChildren: () => import('../patients/new-patient/new-patient.module').then( m => m.NewPatientPageModule)
@@ -57,14 +56,12 @@ const routes: Routes = [
             loadChildren: () => import('../patient-detail/patient-detail.module').then( m => m.PatientDetailPageModule)
           }
       ]
-      }
-      ,
+      },
       {
         path: '',
         redirectTo: '/home/tabs/dashboard',
         pathMatch: 'full'
       }
-
     ]
   },
   {
@@ -73,7 +70,6 @@ const routes: Routes = [
     pathMatch: 'full'
   }
 ];
-
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

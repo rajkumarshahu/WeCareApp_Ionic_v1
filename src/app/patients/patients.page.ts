@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { IonItemSliding } from '@ionic/angular';
 
 import { Patient } from './patients.model'
 import { PatientsService } from './patients.service';
@@ -13,7 +15,7 @@ export class PatientsPage implements OnInit, OnDestroy {
   patients: Patient[];
 
   // Injecting PatientsService
-  constructor(private patientsService: PatientsService) {
+  constructor(private patientsService: PatientsService, private router: Router) {
 
   } // in this way we can use PatientsService anywhere in the class and not just in the constructor
 
@@ -47,5 +49,11 @@ export class PatientsPage implements OnInit, OnDestroy {
   ngOnDestroy() {
 
     console.log("ngOnDestroy")
+  }
+
+  onEdit(patientId: string, slidingtItem: IonItemSliding) {
+    slidingtItem.close()
+    this.router.navigate(['/', 'home', 'tabs', 'patients', 'edit', patientId])
+    console.log('Editing patient', patientId)
   }
 }

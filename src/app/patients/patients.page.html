@@ -10,37 +10,32 @@
 </ion-header>
 
 <ion-content>
-
-<!-- <ion-button
-    margin
-    color="primary"
-    [routerLink]="['/', 'home', 'tabs', 'patients', 'edit', patient.id]"
-    >Edit</ion-button
-  > -->
-
   <ion-list>
-    <ion-item *ngFor="let patient of patients" [routerLink]="['/', 'home','tabs', 'patients',patient.id]" detail>
+  <ion-item-sliding *ngFor="let patient of patients" #slidingtItem #slidingtPatient>
+    <ion-item  [routerLink]="['/', 'home','tabs', 'patients',patient.id]" detail>
     <ion-card class="ion-text-center">
-        <img [src]="patient.imageUrl" />
+        <ion-img [src]="patient.imageUrl"></ion-img>
         <ion-card-header>
           <ion-card-subtitle>{{patient.email}}</ion-card-subtitle>
           <ion-card-subtitle>{{patient.phone}}</ion-card-subtitle>
           <ion-card-title >{{patient.title}}</ion-card-title>
           <ion-item>
-          <ion-button
-              margin
-              color="primary"
-              [routerLink]="['/', 'home', 'tabs', 'patients', 'edit', patient.id]"
-              >Edit</ion-button>
-            <ion-icon name="pencil" slot="start"></ion-icon>
             <ion-icon name="eye" slot="end"></ion-icon>
           </ion-item>
+
         </ion-card-header>
         <ion-card-content>
 
         </ion-card-content>
     </ion-card>
     </ion-item>
+
+    <ion-item-options slide="end">
+      <ion-item-option  color="secondary" (click)="onEdit(patient.id, slidingtItem)" >
+      <ion-icon name="create" slot="icon-only"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 
 </ion-content>
