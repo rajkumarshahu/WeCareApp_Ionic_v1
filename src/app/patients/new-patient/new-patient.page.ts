@@ -44,7 +44,7 @@ export class NewPatientPage implements OnInit {
       }),
       description: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
+        validators: [Validators.required, Validators.maxLength(250)]
       }),
       bodyTemperature: new FormControl(null, {
         updateOn: 'blur',
@@ -70,15 +70,18 @@ export class NewPatientPage implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(1)]
       }),
-      isCritical: new FormControl(null, {
-        updateOn: 'blur'
-      }),
+      // isCritical: new FormControl(null, {
+      //   updateOn: 'blur'
+      // }),
 
     });
   }
 
   onCreateOffer() {
-
+    if (!this.form.valid) {
+      return;
+    }
+    console.log(this.form)
   }
 
 }
