@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Patient } from '../patients/patients.model';
 import { PatientsService } from '../patients/patients.service';
 
@@ -9,8 +10,9 @@ import { PatientsService } from '../patients/patients.service';
   templateUrl: './patient-detail.page.html',
   styleUrls: ['./patient-detail.page.scss'],
 })
-export class PatientDetailPage implements OnInit {
+export class PatientDetailPage implements OnInit, OnDestroy {
   patient: Patient;
+  patientSubscription: Subscription;
 
   // Injecting activated route form @angular/router which we can use in ngOnInit()
   constructor(
@@ -29,12 +31,17 @@ export class PatientDetailPage implements OnInit {
         return;
       }
       const patientId = paramMap.get('patientId');
-      this.patient = this.patientsService.getPatient(patientId);
+      this.patientSubscription = this.patientsService.getPatient(patientId).subscribe(patient => {
+        this.patient = patient;
+      });
     });
   }
 
-  ionViewWillEnter() {
 
+  ngOnDestroy () {
+    if (this.patientSubscription) {
+      this.patientSubscription.unsubscribe();
+    }
   }
 
   onDeletePatient() {
@@ -51,8 +58,8 @@ export class PatientDetailPage implements OnInit {
             text: 'Delete',
             handler: () => {
                // use allPatientsService and use deletePatient method
-    this.patientsService.deletePatient(this.patient.id);
-    this.router.navigate(['/home/tabs/patients']); // navigating back to patients page after deleting patient
+          this.patientsService.deletePatient(this.patient.id);
+          this.router.navigate(['/home/tabs/patients']); // navigating back to patients page after deleting patient
             }
           }
         ]
@@ -61,5 +68,4 @@ export class PatientDetailPage implements OnInit {
         alertEl.present();
       });
   }
-
 }

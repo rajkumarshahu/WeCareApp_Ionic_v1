@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { take, map, filter } from 'rxjs/operators'
+import { AuthService } from '../auth/auth.service';
 import { Patient } from './patients.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PatientsService {
-  private patients: Patient[] = [
+  private _patients = new BehaviorSubject<Patient[]>([
     {
       id: 'p1',
       title: 'John Doe',
@@ -24,6 +27,7 @@ export class PatientsService {
       diastolicBP: 140,
       o2Sat: 92,
       isCritical: false,
+      userId: 'u1',
     },
     {
       id: 'p2',
@@ -43,6 +47,7 @@ export class PatientsService {
       diastolicBP: 128,
       o2Sat: 90,
       isCritical: true,
+      userId: 'u1',
     },
     {
       id: 'p3',
@@ -62,6 +67,7 @@ export class PatientsService {
       diastolicBP: 120,
       o2Sat: 88,
       isCritical: false,
+      userId: 'u1',
     },
     {
       id: 'p4',
@@ -81,6 +87,7 @@ export class PatientsService {
       diastolicBP: 150,
       o2Sat: 92,
       isCritical: true,
+      userId: 'u1',
     },
     {
       id: 'p5',
@@ -100,41 +107,90 @@ export class PatientsService {
       diastolicBP: 140,
       o2Sat: 95,
       isCritical: false,
+      userId: 'u1',
     },
-  ];
+  ]) ;
 
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
-  getAllPatient() {
-    return [...this.patients]; // Returnig copy of patients array
+  get patients() {
+    return this._patients.asObservable();
   }
 
   getAllCriticalPatients() {
-    return [
-      ...(this.patients = this.patients.filter((patient) => {
-        return patient.isCritical === true;
-      })),
-    ];
+    return this._patients.pipe(
+      take(1),
+      map(patients => {
+        return [
+          ...(patients = patients.filter((_patient) => {
+            return _patient.isCritical === true;
+          })),
+        ];
+      })
+    )
+
+
   }
 
   getCriticalPatientCount() {
-    let criticalPatients = this.getAllCriticalPatients();
-    return criticalPatients.length;
+    // let criticalPatients = this.getAllCriticalPatients();
+    // return criticalPatients.length;
   }
 
   // This method returns single patient for patientId
   getPatient(patientId: string) {
-    return {
-      ...this.patients.find((patient) => {
-        // pulling out all the properties of the allPatients object
-        return patient.id === patientId;
-      }),
-    };
+    return this._patients.pipe(
+      take(1),
+      map(patients => {
+        return { ...patients.find(patient => patient.id === patientId)}
+      })
+    )
+  }
+
+  addPatient(
+    title: string,
+    imageUrl: string,
+    diagnosis: string,
+    age: number,
+    phone: string,
+    email: string,
+    address: string,
+    description: string,
+    bodyTemperature: number,
+    pulseRate: number,
+    respirationRate: number,
+    systolicBP: number,
+    diastolicBP: number,
+    o2Sat: number,
+    isCritical: boolean
+  ) {
+    const newPatient = new Patient(
+      Math.random.toString(),
+      title,
+      imageUrl,
+      diagnosis,
+      age,
+      phone,
+      email,
+      address,
+      description,
+      bodyTemperature,
+      pulseRate,
+      respirationRate,
+      systolicBP,
+      diastolicBP,
+      o2Sat,
+      isCritical,
+      this.authService.userId
+    );
+    this._patients.pipe(take(1)).subscribe((patients) => {
+      this._patients.next(patients.concat(newPatient));
+    });
   }
 
   deletePatient(patientId: string) {
-    this.patients = this.patients.filter((patient) => {
-      return patient.id !== patientId;
-    });
+    // this._patients = this._patients.filter((patient) => {
+    //   return patient.id !== patientId;
+    // });
   }
 }

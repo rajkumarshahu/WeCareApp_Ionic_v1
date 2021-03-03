@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Patient } from '../patients.model';
 import { PatientsService } from '../patients.service';
 
@@ -10,10 +11,11 @@ import { PatientsService } from '../patients.service';
   templateUrl: './edit-patient.page.html',
   styleUrls: ['./edit-patient.page.scss'],
 })
-export class EditPatientPage implements OnInit {
+export class EditPatientPage implements OnInit, OnDestroy {
 
   patient: Patient;
   form: FormGroup;
+  private patientSubscription: Subscription
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -29,9 +31,9 @@ export class EditPatientPage implements OnInit {
         return;
       }
       const patientId = paramMap.get('patientId');
-      this.patient = this.patientsService.getPatient(patientId);
-
-      this.form = new FormGroup({
+      this.patientSubscription = this.patientsService.getPatient(patientId).subscribe( patient => {
+        this.patient = patient
+        this.form = new FormGroup({
         title: new FormControl(this.patient.title, {
           updateOn: 'blur',
           validators: [Validators.required]
@@ -93,6 +95,9 @@ export class EditPatientPage implements OnInit {
         //   updateOn: 'blur'
         // }),
       });
+      });
+
+
     });
   }
 
@@ -101,6 +106,12 @@ export class EditPatientPage implements OnInit {
       return;
     }
     console.log(this.form);
+  }
+
+  ngOnDestroy() {
+    if(this.patient) {
+      this.patientSubscription.unsubscribe();
+    }
   }
 
 }

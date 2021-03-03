@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 import { Patient } from './patients.model'
 import { PatientsService } from './patients.service';
@@ -13,6 +14,7 @@ import { PatientsService } from './patients.service';
 export class PatientsPage implements OnInit, OnDestroy {
 
   patients: Patient[];
+  private patientsSubcription: Subscription;
 
   // Injecting PatientsService
   constructor(private patientsService: PatientsService, private router: Router) {
@@ -21,7 +23,9 @@ export class PatientsPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log("ngOnInit")
-// this.patients = this.patientsService.getAllPatient() // This returns all the patients
+    this.patientsSubcription = this.patientsService.patients.subscribe(patients => {
+      this.patients = patients
+    }) // This returns all the patients
   }
 
   ionViewWillEnter() {
@@ -30,7 +34,7 @@ export class PatientsPage implements OnInit, OnDestroy {
   }
 
   ionViewDidEnter() {
-    this.patients = this.patientsService.getAllPatient() // This returns all the patients
+    //this.patients = this.patientsService.getAllPatient() // This returns all the patients
 
     console.log("ionViewDidEnter")
   }
@@ -47,7 +51,9 @@ export class PatientsPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-
+    if(this.patientsSubcription) {
+      this.patientsSubcription.unsubscribe();
+    }
     console.log("ngOnDestroy")
   }
 

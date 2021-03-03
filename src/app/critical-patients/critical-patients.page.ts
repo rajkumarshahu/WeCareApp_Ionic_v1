@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Patient } from '../patients/patients.model';
 import { PatientsService } from '../patients/patients.service';
 
@@ -9,20 +10,29 @@ import { PatientsService } from '../patients/patients.service';
 })
 export class CriticalPatientsPage implements OnInit, OnDestroy {
 
-  criticalPatients: Patient[]
+  loadedPatients: Patient[]
+  loadedCriticalPatients: Patient[]
+  private criticalPatientsSub: Subscription;
 
   constructor(private patientsService: PatientsService) {}
 
 
   ngOnInit(){
+    this.criticalPatientsSub = this.patientsService.getAllCriticalPatients().subscribe(criticalPatients =>{
+      this.loadedCriticalPatients = criticalPatients
+    })
 
+    console.log(this.loadedCriticalPatients)
   }
 
   ionViewWillLeave() {
-    this.criticalPatients = this.patientsService.getAllCriticalPatients()
+
   }
 
   ngOnDestroy() {
+    if(this.loadedCriticalPatients) {
+      this.criticalPatientsSub.unsubscribe()
+    }
     console.log("ngOnDestroy()")
   }
 

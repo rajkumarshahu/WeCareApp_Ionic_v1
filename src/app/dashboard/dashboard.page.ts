@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Patient } from '../patients/patients.model';
 import { PatientsService } from '../patients/patients.service';
 
@@ -9,19 +10,27 @@ import { PatientsService } from '../patients/patients.service';
 })
 export class DashboardPage implements OnInit, OnDestroy {
 
-  patients: Patient[];
-  criticalPatients: Patient[]
+  loadedPatients: Patient[];
+  loadedCriticalPatients: Patient[]
   patientCount: Number;
   criticalPatientCount: Number;
+  private criticalPatientsSub: Subscription
+  private patientsSubcription: Subscription
 
   constructor(private patientsService: PatientsService) {}
 
 
   ngOnInit(){
-    this.patientCount = this.patientsService.getAllPatient().length
-    this.criticalPatientCount = this.patientsService.getAllCriticalPatients().length
+    // this.patientCount = this.patientsService.patients.length
+    // this.criticalPatientCount = this.patientsService.getAllCriticalPatients().length
 
-    // this.criticalPatients = this.patientsService.getAllCriticalPatients()
+    this.patientsSubcription = this.patientsService.patients.subscribe(patients => {
+      this.loadedPatients = patients
+    })
+
+    this.criticalPatientsSub = this.patientsService.getAllCriticalPatients().subscribe(criticalPatients =>{
+      this.loadedCriticalPatients = criticalPatients
+    })
 
     console.log("ngOnInit")
   }
@@ -33,7 +42,7 @@ export class DashboardPage implements OnInit, OnDestroy {
 
   ionViewDidEnter() {
 
-    this.criticalPatients = this.patientsService.getAllCriticalPatients()
+    // this.criticalPatients = this.patientsService.getAllCriticalPatients()
     console.log("ionViewDidEnter")
   }
 
@@ -49,7 +58,13 @@ export class DashboardPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
 
+    if(this.criticalPatientsSub) {
+      this.criticalPatientsSub.unsubscribe
+    }
 
+    if(this.patientsSubcription){
+      this.patientsSubcription.unsubscribe()
+    }
     console.log("ngOnDestroy")
   }
 
