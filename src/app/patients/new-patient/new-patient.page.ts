@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 import { PatientsService } from '../patients.service';
 
 @Component({
@@ -11,7 +12,11 @@ import { PatientsService } from '../patients.service';
 export class NewPatientPage implements OnInit {
   form: FormGroup;
 
-  constructor(private patientService: PatientsService, private router: Router) {}
+  constructor(
+    private patientService: PatientsService,
+    private router: Router,
+    private loadingCtrl: LoadingController
+  ) {}
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -49,7 +54,7 @@ export class NewPatientPage implements OnInit {
       }),
       description: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(250)],
+        validators: [Validators.required, Validators.maxLength(500)],
       }),
       bodyTemperature: new FormControl(null, {
         updateOn: 'blur',
@@ -76,33 +81,44 @@ export class NewPatientPage implements OnInit {
         validators: [Validators.required, Validators.min(1)],
       }),
       isCritical: new FormControl(null, {
-        updateOn: 'blur'
+        updateOn: 'blur',
       }),
     });
   }
 
-  onCreateOffer() {
+  onCreatePatient() {
     if (!this.form.valid) {
       return;
     }
-    this.patientService.addPatient(
-      this.form.value.title,
-      this.form.value.imageUrl,
-      this.form.value.diagnosis,
-      +this.form.value.age,
-      this.form.value.phone,
-      this.form.value.email,
-      this.form.value.address,
-      this.form.value.description,
-      +this.form.value.bodyTemperature,
-      +this.form.value.pulseRate,
-      +this.form.value.respirationRate,
-      +this.form.value.systolicBP,
-      +this.form.value.diastolicBP,
-      +this.form.value.o2Sat,
-      this.form.value.isCritical
-    );
-    this.form.reset();
-    this.router.navigate(['/home/tabs/patients']);
+    this.loadingCtrl
+      .create({
+        message: 'Adding patient...',
+      })
+      .then((loadingEl) => {
+        loadingEl.present();
+        this.patientService
+          .addPatient(
+            this.form.value.title,
+            this.form.value.imageUrl,
+            this.form.value.diagnosis,
+            +this.form.value.age,
+            this.form.value.phone,
+            this.form.value.email,
+            this.form.value.address,
+            this.form.value.description,
+            +this.form.value.bodyTemperature,
+            +this.form.value.pulseRate,
+            +this.form.value.respirationRate,
+            +this.form.value.systolicBP,
+            +this.form.value.diastolicBP,
+            +this.form.value.o2Sat,
+            this.form.value.isCritical
+          )
+          .subscribe(() => {
+            loadingEl.dismiss();
+            this.form.reset();
+            this.router.navigate(['/home/tabs/patients']);
+          });
+      });
   }
 }

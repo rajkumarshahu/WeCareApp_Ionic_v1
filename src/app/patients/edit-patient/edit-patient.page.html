@@ -196,12 +196,16 @@
           </ion-item>
         </ion-col>
       </ion-row>
-      <!-- <ion-row>
-      <ion-item>
-      <ion-label>Mark as Critical</ion-label>
+      <ion-row>
+      <ion-item *ngIf="patient.isCritical === true">
+      <ion-label>Mark as Critical Patient</ion-label>
           <ion-toggle slot="end" name="isCritical" color="warning" checked></ion-toggle>
       </ion-item>
-      </ion-row> -->
+      <ion-item *ngIf="patient.isCritical === false">
+      <ion-label>Mark as Normal Patient</ion-label>
+          <ion-toggle slot="end" name="isCritical" color="warning"></ion-toggle>
+      </ion-item>
+      </ion-row>
     </ion-grid>
   </form>
 

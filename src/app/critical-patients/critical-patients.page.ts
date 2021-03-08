@@ -21,19 +21,13 @@ export class CriticalPatientsPage implements OnInit, OnDestroy {
     this.criticalPatientsSub = this.patientsService.getAllCriticalPatients().subscribe(criticalPatients =>{
       this.loadedCriticalPatients = criticalPatients
     })
-
-    console.log(this.loadedCriticalPatients)
   }
 
-  ionViewWillLeave() {
-
-  }
 
   ngOnDestroy() {
     if(this.loadedCriticalPatients) {
       this.criticalPatientsSub.unsubscribe()
     }
-    console.log("ngOnDestroy()")
   }
 
 }

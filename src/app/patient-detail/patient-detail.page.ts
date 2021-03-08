@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, LoadingController, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { Patient } from '../patients/patients.model';
 import { PatientsService } from '../patients/patients.service';
@@ -20,7 +20,8 @@ export class PatientDetailPage implements OnInit, OnDestroy {
     private patientsService: PatientsService,
     private router: Router, // inject router to leave the page after deleting the patient
     private alertController: AlertController,
-    private navController: NavController
+    private navController: NavController,
+    private loadingCtrl: LoadingController
   ) {}
 
   ngOnInit() {
@@ -36,7 +37,6 @@ export class PatientDetailPage implements OnInit, OnDestroy {
       });
     });
   }
-
 
   ngOnDestroy () {
     if (this.patientSubscription) {
@@ -57,9 +57,16 @@ export class PatientDetailPage implements OnInit, OnDestroy {
           {
             text: 'Delete',
             handler: () => {
-               // use allPatientsService and use deletePatient method
-          this.patientsService.deletePatient(this.patient.id);
-          this.router.navigate(['/home/tabs/patients']); // navigating back to patients page after deleting patient
+
+              this.loadingCtrl.create({ message: 'Deleting....'}).then(loadingEl => {
+              // use allPatientsService and use deletePatient method
+              this.patientsService.deletePatient(this.patient.id).subscribe();
+              this.router.navigate(['/home/tabs/patients']); // navigating back to patients page after deleting patient
+                loadingEl.present();
+                setTimeout(() => {
+                  loadingEl.dismiss();
+                }, 1000)
+              })
             }
           }
         ]

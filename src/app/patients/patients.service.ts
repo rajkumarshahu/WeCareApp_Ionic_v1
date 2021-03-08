@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { take, map, filter } from 'rxjs/operators'
+import { take, map, tap, delay } from 'rxjs/operators'
 import { AuthService } from '../auth/auth.service';
 import { Patient } from './patients.model';
 
@@ -46,7 +46,7 @@ export class PatientsService {
       systolicBP: 120,
       diastolicBP: 128,
       o2Sat: 90,
-      isCritical: true,
+      isCritical: false,
       userId: 'u1',
     },
     {
@@ -66,7 +66,7 @@ export class PatientsService {
       systolicBP: 80,
       diastolicBP: 120,
       o2Sat: 88,
-      isCritical: false,
+      isCritical: true,
       userId: 'u1',
     },
     {
@@ -132,11 +132,6 @@ export class PatientsService {
 
   }
 
-  getCriticalPatientCount() {
-    // let criticalPatients = this.getAllCriticalPatients();
-    // return criticalPatients.length;
-  }
-
   // This method returns single patient for patientId
   getPatient(patientId: string) {
     return this._patients.pipe(
@@ -183,14 +178,69 @@ export class PatientsService {
       isCritical,
       this.authService.userId
     );
-    this._patients.pipe(take(1)).subscribe((patients) => {
-      this._patients.next(patients.concat(newPatient));
-    });
+    return this.patients.pipe(take(1), delay(1000), tap( patients => {
+
+        this._patients.next(patients.concat(newPatient));
+
+    }));
+  }
+
+  updatePatient(
+    patientId: string,
+    title: string,
+    imageUrl: string,
+    diagnosis: string,
+    age: number,
+    phone: string,
+    email: string,
+    address: string,
+    description: string,
+    bodyTemperature: number,
+    pulseRate: number,
+    respirationRate: number,
+    systolicBP: number,
+    diastolicBP: number,
+    o2Sat: number,
+    isCritical: boolean
+  ) {
+    return this.patients.pipe(
+      take(1), // take(1) gets the latest snapshot of the list
+      delay(1000),
+      tap(patients => {
+        const updatedPatientIndex = patients.findIndex(p => p.id === patientId);
+        const updatedPatients = [...patients];
+        const oldPatient = updatedPatients[updatedPatientIndex];
+        updatedPatients[updatedPatientIndex] = new Patient(
+          oldPatient.id,
+          title,
+          imageUrl,
+          diagnosis,
+          age,
+          phone,
+          email,
+          address,
+          description,
+          bodyTemperature,
+          pulseRate,
+          respirationRate,
+          systolicBP,
+          diastolicBP,
+          o2Sat,
+          isCritical,
+          oldPatient.userId
+        );
+        this._patients.next(updatedPatients); //  Emit new list of patients
+      })
+    )
   }
 
   deletePatient(patientId: string) {
-    // this._patients = this._patients.filter((patient) => {
-    //   return patient.id !== patientId;
-    // });
+    return this._patients.pipe(
+      take(1),
+      delay(2000),
+      tap(patients => {
+        this._patients.next(patients.filter(p => p.id !== patientId))
+      })
+    )
   }
 }

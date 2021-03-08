@@ -13,6 +13,7 @@
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
         <ion-card>
           <ion-card-header>
+          <ion-card-title>{{userId}}</ion-card-title>
             <ion-card-title>Total Patients: {{loadedPatients.length}}</ion-card-title>
             <ion-card-title>Number of Critical Patients: {{loadedCriticalPatients.length}}</ion-card-title>
 
@@ -22,6 +23,15 @@
         </ion-card>
       </ion-col>
     </ion-row>
+    </ion-grid>
+    <ion-grid *ngIf="!loadedCriticalPatients || loadedCriticalPatients.length <= 0">
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <p>Hooray!!! There are no critical patients right now!</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+<ion-grid *ngIf="loadedCriticalPatients.length > 0">
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
         <ion-list>

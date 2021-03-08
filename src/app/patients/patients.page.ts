@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonItemSliding } from '@ionic/angular';
+import { IonItemSliding, LoadingController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { Patient } from './patients.model'
@@ -28,33 +28,10 @@ export class PatientsPage implements OnInit, OnDestroy {
     }) // This returns all the patients
   }
 
-  ionViewWillEnter() {
-
-    console.log("ionViewWillEnter")
-  }
-
-  ionViewDidEnter() {
-    //this.patients = this.patientsService.getAllPatient() // This returns all the patients
-
-    console.log("ionViewDidEnter")
-  }
-
-  ionViewWillLeave() {
-  //  this.patients = this.patientsService.getAllPatient() // This returns all the patients
-    console.log("ionViewWillLeave")
-  }
-
-  ionViewDidLeave() {
-
-    //this.patients = this.patientsService.getAllPatient() // This returns all the patients
-    console.log("ionViewDidLeave")
-  }
-
   ngOnDestroy() {
     if(this.patientsSubcription) {
       this.patientsSubcription.unsubscribe();
     }
-    console.log("ngOnDestroy")
   }
 
   onEdit(patientId: string, slidingtItem: IonItemSliding) {
