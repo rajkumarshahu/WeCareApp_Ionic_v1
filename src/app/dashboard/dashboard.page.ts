@@ -32,15 +32,29 @@ export class DashboardPage implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ionViewWillEnter(){
+    this.patientsSubcription = this.patientsService.patients.subscribe(patients => {
+      this.loadedPatients = patients
+    })
 
-    if(this.criticalPatientsSub) {
-      this.criticalPatientsSub.unsubscribe
-    }
+    this.criticalPatientsSub = this.patientsService.getAllCriticalPatients().subscribe(criticalPatients =>{
+      this.loadedCriticalPatients = criticalPatients
+    });
+    console.log("ionViewWillEnter()")
+  }
+
+  ionViewDidLoad(){
+    console.log("ionViewDidLoad()")
+  }
+
+  ngOnDestroy() {
 
     if(this.patientsSubcription){
       this.patientsSubcription.unsubscribe()
     }
-  }
 
+    if(this.criticalPatientsSub) {
+      this.criticalPatientsSub.unsubscribe
+    }
+  }
 }

@@ -12,7 +12,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-<ion-grid *ngIf="loadedCriticalPatients.length > 0">
+<!-- <ion-grid *ngIf="loadedCriticalPatients.length > 0">
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
         <ion-list>
@@ -28,5 +28,32 @@
         </ion-list>
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid> -->
+
+
+
+  <ion-list>
+  <ion-item-sliding *ngFor="let criticalPatient of loadedCriticalPatients" #slidingtItem #slidingtPatient>
+    <ion-item  [routerLink]="['/', 'home','tabs', 'patients',criticalPatient.id]" detail>
+    <ion-card class="ion-text-center">
+        <ion-img [src]="criticalPatient.imageUrl"></ion-img>
+        <ion-card-header>
+          <ion-card-subtitle>{{criticalPatient.email}}</ion-card-subtitle>
+          <ion-card-subtitle>{{criticalPatient.phone}}</ion-card-subtitle>
+          <ion-card-title >{{criticalPatient.title}}</ion-card-title>
+
+        </ion-card-header>
+        <ion-card-content>
+
+        </ion-card-content>
+    </ion-card>
+    </ion-item>
+
+    <ion-item-options slide="end">
+      <ion-item-option  color="secondary" (click)="onEdit(criticalPatient.id, slidingtItem)" >
+      <ion-icon name="create" slot="icon-only"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>
