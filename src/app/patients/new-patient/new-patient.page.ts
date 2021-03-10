@@ -11,6 +11,7 @@ import { PatientsService } from '../patients.service';
 })
 export class NewPatientPage implements OnInit {
   form: FormGroup;
+  toggleValue: boolean = false;
 
   constructor(
     private patientService: PatientsService,
@@ -80,11 +81,12 @@ export class NewPatientPage implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(1)],
       }),
-      isCritical: new FormControl(null, {
+      isCritical: new FormControl(this.toggleValue, {
         updateOn: 'blur',
       }),
     });
   }
+
 
   onCreatePatient() {
     if (!this.form.valid) {
