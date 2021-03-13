@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Patient } from '../patients/patients.model';
+import { IonItemSliding, LoadingController } from '@ionic/angular';
 import { PatientsService } from '../patients/patients.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-critical-patients',
@@ -14,7 +16,7 @@ export class CriticalPatientsPage implements OnInit, OnDestroy {
   loadedCriticalPatients: Patient[]
   private criticalPatientsSub: Subscription;
 
-  constructor(private patientsService: PatientsService) {}
+  constructor(private patientsService: PatientsService, private router: Router) {}
 
 
   ngOnInit(){
@@ -27,6 +29,12 @@ export class CriticalPatientsPage implements OnInit, OnDestroy {
     this.criticalPatientsSub = this.patientsService.getAllCriticalPatients().subscribe(criticalPatients =>{
       this.loadedCriticalPatients = criticalPatients
     })
+  }
+
+  onEdit(patientId: string, slidingtItem: IonItemSliding) {
+    slidingtItem.close()
+    this.router.navigate(['/', 'home', 'tabs', 'patients', 'edit', patientId])
+    console.log('Editing patient', patientId)
   }
 
 
