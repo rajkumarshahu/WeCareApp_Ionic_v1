@@ -14,6 +14,7 @@ import { PatientsService } from './patients.service';
 export class PatientsPage implements OnInit, OnDestroy {
 
   patients: Patient[];
+  isLoading = false;
   private patientsSubcription: Subscription;
 
   // Injecting PatientsService
@@ -22,11 +23,34 @@ export class PatientsPage implements OnInit, OnDestroy {
   } // in this way we can use PatientsService anywhere in the class and not just in the constructor
 
   ngOnInit() {
-    console.log("ngOnInit")
-    this.patientsSubcription = this.patientsService.patients.subscribe(patients => {
-      this.patients = patients
-    }) // This returns all the patients
+
   }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+
+   this.patientsService.fetchPatients().subscribe(resp => {
+    this.patients  = resp["data"];
+    this.isLoading = false
+
+      //console.log(resp["data"]);
+
+   });
+    // this.patientsSubcription = this.patientsService.patients.subscribe(patients => {
+    //   this.patients = patients
+    // })
+    // this.isLoading = true;
+    // alert(this.patientsService.fetchPatients())
+    //this.patients = this.patientsService.fetchPatients();
+  }
+
+  ionViewDidEnter() {
+    // this.isLoading = true;
+    // this.patientsService.fetchPatients().subscribe(() => {
+    //   this.isLoading = false;
+    // });
+  }
+
 
   ngOnDestroy() {
     if(this.patientsSubcription) {
@@ -34,9 +58,10 @@ export class PatientsPage implements OnInit, OnDestroy {
     }
   }
 
-  onEdit(patientId: string, slidingtItem: IonItemSliding) {
+  onEdit(patient: Patient, slidingtItem: IonItemSliding) {
+    this.patientsService.patient = patient;
     slidingtItem.close()
-    this.router.navigate(['/', 'home', 'tabs', 'patients', 'edit', patientId])
-    console.log('Editing patient', patientId)
+    this.router.navigate(['/', 'home', 'tabs', 'patients', 'edit', 0])
+    //console.log('Editing patient', patientId)
   }
 }

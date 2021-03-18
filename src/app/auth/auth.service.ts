@@ -17,7 +17,7 @@ interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
-  private _userIsAuthenticated = false;
+  private _userIsAuthenticated = true;
   private _userId = null;
 
   get userIsAuthenticated() {

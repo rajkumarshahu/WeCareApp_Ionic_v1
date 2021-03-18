@@ -11,39 +11,34 @@ import { PatientsService } from '../patients/patients.service';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit, OnDestroy {
+  //patients: Patient[];
   userName: String;
-  loadedPatients: Patient[];
-  loadedCriticalPatients: Patient[]
+  loadedPatients: Patient[] = [];
+  loadedCriticalPatients: Patient[] = [];
   patientCount: Number;
   criticalPatientCount: Number;
   private criticalPatientsSub: Subscription
   private patientsSubcription: Subscription
+  isLoading: false;
 
   constructor(private patientsService: PatientsService) {}
 
 
   ngOnInit(){
-    this.patientsSubcription = this.patientsService.patients.subscribe(patients => {
-      this.loadedPatients = patients
-    })
 
-    this.criticalPatientsSub = this.patientsService.getAllCriticalPatients().subscribe(criticalPatients =>{
-      this.loadedCriticalPatients = criticalPatients
-    });
+    this.patientsService.fetchPatients().subscribe(resp => {
+      this.loadedPatients  = resp["data"];
+      this.loadedCriticalPatients = this.loadedPatients.filter(p => p.isCritical);
+     });
+
   }
 
-  ionViewWillEnter(){
-    this.patientsSubcription = this.patientsService.patients.subscribe(patients => {
-      this.loadedPatients = patients
-    })
+  ionViewWillEnter() {
 
-    this.criticalPatientsSub = this.patientsService.getAllCriticalPatients().subscribe(criticalPatients =>{
-      this.loadedCriticalPatients = criticalPatients
-    });
-    console.log("ionViewWillEnter()")
   }
 
   ionViewDidLoad(){
+
     console.log("ionViewDidLoad()")
   }
 

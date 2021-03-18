@@ -27,15 +27,11 @@ export class EditPatientPage implements OnInit, OnDestroy {
   ngOnInit() {
     // Map of all the parameters this route receives
     this.activatedRoute.paramMap.subscribe((paramMap) => {
-      if (!paramMap.has('patientId')) {
-        this.navController.navigateBack('/home/tabs/patients');
-        return;
-      }
-      const patientId = paramMap.get('patientId');
-      this.patientSubscription = this.patientsService
-        .getPatient(patientId)
-        .subscribe((patient) => {
-          this.patient = patient;
+
+
+
+          this.patient = this.patientsService.patient;
+          console.log(this.patient);
           this.form = new FormGroup({
             title: new FormControl(this.patient.title, {
               updateOn: 'blur',
@@ -103,7 +99,7 @@ export class EditPatientPage implements OnInit, OnDestroy {
               updateOn: 'blur',
             }),
           });
-        });
+
     });
   }
 
@@ -145,8 +141,8 @@ export class EditPatientPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.patient) {
-      this.patientSubscription.unsubscribe();
-    }
+    // if (this.patient) {
+    //   this.patientSubscription.unsubscribe();
+    // }
   }
 }
