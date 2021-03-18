@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthPage } from '../auth/auth.page';
-import { AuthService } from '../auth/auth.service';
 import { Patient } from '../patients/patients.model';
 import { PatientsService } from '../patients/patients.service';
 
@@ -18,6 +16,7 @@ export class DashboardPage implements OnInit, OnDestroy {
   criticalPatientCount: Number;
   private criticalPatientsSub: Subscription
   private patientsSubcription: Subscription
+  isLoading = false;
 
   constructor(private patientsService: PatientsService) {}
 
@@ -32,23 +31,18 @@ export class DashboardPage implements OnInit, OnDestroy {
     });
   }
 
-  ionViewWillEnter(){
-    this.patientsSubcription = this.patientsService.patients.subscribe(patients => {
-      this.loadedPatients = patients
-    })
-
-    this.criticalPatientsSub = this.patientsService.getAllCriticalPatients().subscribe(criticalPatients =>{
-      this.loadedCriticalPatients = criticalPatients
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.patientsService.fetchPatients().subscribe(() => {
+      this.isLoading = false;
     });
-    console.log("ionViewWillEnter()")
-  }
 
-  ionViewDidLoad(){
-    console.log("ionViewDidLoad()")
+    this.patientsService.fetchPatients().subscribe(resp => {
+      this.loadedCriticalPatients = this.loadedPatients.filter(p => p.isCritical);
+     });
   }
 
   ngOnDestroy() {
-
     if(this.patientsSubcription){
       this.patientsSubcription.unsubscribe()
     }

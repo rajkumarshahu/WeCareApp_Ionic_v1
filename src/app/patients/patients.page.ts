@@ -15,6 +15,8 @@ export class PatientsPage implements OnInit, OnDestroy {
 
   patients: Patient[];
   private patientsSubcription: Subscription;
+  isLoading = false;
+
 
   // Injecting PatientsService
   constructor(private patientsService: PatientsService, private router: Router) {
@@ -27,6 +29,14 @@ export class PatientsPage implements OnInit, OnDestroy {
       this.patients = patients
     }) // This returns all the patients
   }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.patientsService.fetchPatients().subscribe(() => {
+      this.isLoading = false;
+    });
+  }
+
 
   ngOnDestroy() {
     if(this.patientsSubcription) {
