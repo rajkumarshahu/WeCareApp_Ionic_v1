@@ -28,8 +28,6 @@ export class AuthService {
       } else {
         return false;
       }
-
-
     }))
   }
 
@@ -66,6 +64,8 @@ export class AuthService {
     )
     .pipe(tap(this.setUserData.bind(this)));
   }
+
+
   logout() {
     this._user.next(null);
   }

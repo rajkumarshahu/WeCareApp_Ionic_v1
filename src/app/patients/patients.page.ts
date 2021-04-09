@@ -24,7 +24,6 @@ export class PatientsPage implements OnInit, OnDestroy {
   } // in this way we can use PatientsService anywhere in the class and not just in the constructor
 
   ngOnInit() {
-    console.log("ngOnInit")
     this.patientsSubcription = this.patientsService.patients.subscribe(patients => {
       this.patients = patients
     }) // This returns all the patients

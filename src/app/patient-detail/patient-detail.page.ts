@@ -13,6 +13,7 @@ import { PatientsService } from '../patients/patients.service';
 export class PatientDetailPage implements OnInit, OnDestroy {
   patient: Patient;
   patientSubscription: Subscription;
+  patients: string;
 
   // Injecting activated route form @angular/router which we can use in ngOnInit()
   constructor(

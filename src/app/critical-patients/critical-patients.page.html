@@ -7,34 +7,22 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-grid *ngIf="isLoading">
+  <ion-row>
+    <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+      <ion-spinner color="primary"></ion-spinner>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
 <ion-content>
-  <ion-grid *ngIf="!loadedCriticalPatients || loadedCriticalPatients.length <= 0">
+  <ion-grid *ngIf="!isLoading && (!loadedCriticalPatients || loadedCriticalPatients.length <= 0)">
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
         <p>Hooray!!! There are no critical patients right now!</p>
       </ion-col>
     </ion-row>
   </ion-grid>
-  <!-- <ion-grid *ngIf="loadedCriticalPatients.length > 0">
-    <ion-row>
-      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
-        <ion-list>
-          <ion-item *ngFor="let criticalPatient of loadedCriticalPatients" [routerLink]="['/', 'home', 'tabs', 'dashboard', criticalPatient.id]" detail>
-            <ion-thumbnail slot="start">
-              <ion-img [src]="criticalPatient.imageUrl"></ion-img>
-            </ion-thumbnail>
-            <ion-label>
-              <h2>{{ criticalPatient.title }}</h2>
-              <p>{{ criticalPatient.description }}</p>
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-    </ion-row>
-  </ion-grid> -->
-
-
-
   <ion-list>
     <ion-item-sliding *ngFor="let criticalPatient of loadedCriticalPatients" #slidingtItem #slidingtPatient>
       <ion-item [routerLink]="['/', 'home','tabs', 'patients',criticalPatient.id]" detail>
@@ -44,11 +32,8 @@
             <ion-card-subtitle>{{criticalPatient.email}}</ion-card-subtitle>
             <ion-card-subtitle>{{criticalPatient.phone}}</ion-card-subtitle>
             <ion-card-title>{{criticalPatient.title}}</ion-card-title>
-
           </ion-card-header>
-          <ion-card-content>
-
-          </ion-card-content>
+          <ion-card-content> </ion-card-content>
         </ion-card>
       </ion-item>
 

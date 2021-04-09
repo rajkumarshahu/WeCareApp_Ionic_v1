@@ -15,6 +15,7 @@ export class CriticalPatientsPage implements OnInit, OnDestroy {
   loadedPatients: Patient[]
   loadedCriticalPatients: Patient[]
   private criticalPatientsSub: Subscription;
+  isLoading = false;
 
   constructor(private patientsService: PatientsService, private router: Router) {}
 
@@ -26,9 +27,11 @@ export class CriticalPatientsPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
+    this.isLoading = true;
     this.criticalPatientsSub = this.patientsService.getAllCriticalPatients().subscribe(criticalPatients =>{
       this.loadedCriticalPatients = criticalPatients
     })
+    this.isLoading = false;
   }
 
   onEdit(patientId: string, slidingtItem: IonItemSliding) {

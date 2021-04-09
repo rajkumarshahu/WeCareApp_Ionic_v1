@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
@@ -31,12 +31,7 @@ const routes: Routes = [
     path: 'critical-patients',
     loadChildren: () => import('./critical-patients/critical-patients.module').then( m => m.CriticalPatientsPageModule),
     canLoad: [AuthGuard]
-  },
-  // {
-  //   path: 'patient-detail',
-  //   loadChildren: () => import('./patient-detail/patient-detail.module').then( m => m.PatientDetailPageModule)
-  // },
-
+  }
 ];
 
 @NgModule({

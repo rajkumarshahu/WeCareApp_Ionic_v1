@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { __core_private_testing_placeholder__ } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController, NavController } from '@ionic/angular';
@@ -26,8 +27,10 @@ export class EditPatientPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Map of all the parameters this route receives
+
     this.activatedRoute.paramMap.subscribe((paramMap) => {
       if (!paramMap.has('patientId')) {
+
         this.navController.navigateBack('/home/tabs/patients');
         return;
       }
@@ -140,6 +143,7 @@ export class EditPatientPage implements OnInit, OnDestroy {
             loadingEl.dismiss();
             this.form.reset();
             this.router.navigate(['/home/tabs/patients']);
+
           });
       });
   }
